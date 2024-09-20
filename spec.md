@@ -17,7 +17,7 @@ flowchart RL
         F[return <'book_id'>]
         G[query]
     end
-   
+
     B <--Available Books--> D
     B <--Borrow Success--> E
     B <--Return Success--> F
@@ -26,9 +26,8 @@ flowchart RL
     subgraph Server
         direction LR
         id1[(Credentials DB)] --> A[Library Management System]
-        id2[(Available Books DB)] --> A[Library Management System]
-        id3[(Borrowed Books DB)] --> A[Library Management System]
-        id4[(Sessions DB)] --> A[Library Management System]
+        id2[(Books DB)] --> A[Library Management System]
+        id3[(Sessions DB)] --> A[Library Management System]
     end
 
     Client <--> Server
@@ -40,26 +39,26 @@ flowchart RL
 
 The client will use a command line interface that handles the following commands in the format below:
 
-| Command               | Description                            | Client Usage                  |
-| --------------------- | -------------------------------------- | ----------------------------- |
-| **Log In**            | Authenticates this session to the system. | `login <username> <password>` |
-| **Browse**   | Views the list of available books.     | `check`                       |
-| **Borrow Book**       | Borrows a book from the library.       | `borrow <book_id>`            |
-| **Return Book**       | Returns a borrowed book to the library.| `return <book_id>`            |
-| **Query**     | Views the list of books borrowed by the user. | `query`                       |
+| Command         | Description                                   | Client Usage                  |
+| --------------- | --------------------------------------------- | ----------------------------- |
+| **Log In**      | Authenticates this session to the system.     | `login <username> <password>` |
+| **Browse**      | Views the list of available books.            | `check`                       |
+| **Borrow Book** | Borrows a book from the library.              | `borrow <book_id>`            |
+| **Return Book** | Returns a borrowed book to the library.       | `return <book_id>`            |
+| **Query**       | Views the list of books borrowed by the user. | `query`                       |
 
 !!! warning
-    Requires Authentication
+Requires Authentication
 
 ## Client OpCodes
 
-| Command                         | OpCode |
-| ------------------------------- | ------ |
-| Login                           | 0x01   |
-| Browse                          | 0x02   |
-| Borrow                          | 0x03   |
-| Return                          | 0x04   |
-| Query                           | 0x05   |
+| Command | OpCode |
+| ------- | ------ |
+| Login   | 0x01   |
+| Browse  | 0x02   |
+| Borrow  | 0x03   |
+| Return  | 0x04   |
+| Query   | 0x05   |
 
 ## Server RepCodes
 
