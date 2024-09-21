@@ -4,6 +4,55 @@
 
 The digital Library Management System will allow authorized users to log in, check available books, borrow books, return books, and view their borrowed books. The server will accept connections from the provided client and process incoming commands in accordance with the command table and line diagrams below. The server will only accept authorized users whose usernames and passwords are in the credentials file. To keep persistent records, the list of available books and borrowed books will be stored in respective files.
 
+### Table 1: `users`
+
+- **Purpose**: Store user information.
+- **Primary Key**: `user_id`
+
+| Column   | Data Type              |
+| -------- | ---------------------- |
+| user_id  | uint32_t (Primary Key) |
+| username | char \*                |
+| password | char \*                |
+
+### Table 2: `books`
+
+- **Purpose**: Store book information.
+- **Primary Key**: `book_id`
+
+| Column       | Data Type              |
+| ------------ | ---------------------- |
+| book_id      | uint32_t (Primary Key) |
+| title        | char \*                |
+| author       | char \*                |
+| is_available | bool                   |
+
+### Table 3: `checkouts`
+
+- **Purpose**: To record which user has checked out which book, representing the relationship between `users` and `books`.
+- **Primary Key**: Combination of `user_id` and `book_id` (composite key).
+- **Foreign Keys**: `user_id` (references `users.user_id`), `book_id` (references `books.book_id`).
+
+| Column        | Data Type                                          |
+| ------------- | -------------------------------------------------- |
+| checkout_id   | uint32_t (Primary Key, Auto Increment)             |
+| user_id       | uint32_t (Foreign Key referencing `users.user_id`) |
+| book_id       | uint32_t (Foreign Key referencing `books.book_id`) |
+| checkout_date | char \*                                            |
+| return_date   | char \* (nullable)                                 |
+
+### Relationship Explanation:
+
+- The `users` table is linked to the `books` table through the `checkouts` table, which records each instance of a user checking out a book.
+- The `checkouts` table has a **many-to-one relationship** with both the `users` and `books` tables.
+  - A single user can have multiple entries in the `checkouts` table for different books (one-to-many).
+  - A single book can have multiple checkout records over time (one-to-many), but at any point in time, it can only be checked out by one user.
+
+### Primary Key and Foreign Key:
+
+- The `primary key` in the `checkouts` table is typically the combination of `user_id` and `book_id`, which ensures that a book cannot be checked out multiple times simultaneously by the same user.
+- The `foreign keys` in the `checkouts` table are `user_id` and `book_id`, which reference the `users` and `books` tables respectively.
+
 ## Diagram
 
 ```mermaid
@@ -17,7 +66,7 @@ flowchart RL
         F[return <'book_id'>]
         G[query]
     end
-   
+
     B <--Available Books--> D
     B <--Borrow Success--> E
     B <--Return Success--> F
@@ -26,9 +75,8 @@ flowchart RL
     subgraph Server
         direction LR
         id1[(Credentials DB)] --> A[Library Management System]
-        id2[(Available Books DB)] --> A[Library Management System]
-        id3[(Borrowed Books DB)] --> A[Library Management System]
-        id4[(Sessions DB)] --> A[Library Management System]
+        id2[(Library DB)] --> A[Library Management System]
+        id3[(Sessions DB)] --> A[Library Management System]
     end
 
     Client <--> Server
@@ -40,26 +88,26 @@ flowchart RL
 
 The client will use a command line interface that handles the following commands in the format below:
 
-| Command               | Description                            | Client Usage                  |
-| --------------------- | -------------------------------------- | ----------------------------- |
-| **Log In**            | Authenticates this session to the system. | `login <username> <password>` |
-| **Browse**   | Views the list of available books.     | `check`                       |
-| **Borrow Book**       | Borrows a book from the library.       | `borrow <book_id>`            |
-| **Return Book**       | Returns a borrowed book to the library.| `return <book_id>`            |
-| **Query**     | Views the list of books borrowed by the user. | `query`                       |
+| Command         | Description                                   | Client Usage                  |
+| --------------- | --------------------------------------------- | ----------------------------- |
+| **Log In**      | Authenticates this session to the system.     | `login <username> <password>` |
+| **Browse**      | Views the list of available books.            | `check`                       |
+| **Borrow Book** | Borrows a book from the library.              | `borrow <book_id>`            |
+| **Return Book** | Returns a borrowed book to the library.       | `return <book_id>`            |
+| **Query**       | Views the list of books borrowed by the user. | `query`                       |
 
 !!! warning
-    Requires Authentication
+Requires Authentication
 
 ## Client OpCodes
 
-| Command                         | OpCode |
-| ------------------------------- | ------ |
-| Login                           | 0x01   |
-| Browse                          | 0x02   |
-| Borrow                          | 0x03   |
-| Return                          | 0x04   |
-| Query                           | 0x05   |
+| Command | OpCode |
+| ------- | ------ |
+| Login   | 0x01   |
+| Browse  | 0x02   |
+| Borrow  | 0x03   |
+| Return  | 0x04   |
+| Query   | 0x05   |
 
 ## Server RepCodes
 
