@@ -4,6 +4,56 @@
 
 The digital Library Management System will allow authorized users to log in, check available books, borrow books, return books, and view their borrowed books. The server will accept connections from the provided client and process incoming commands in accordance with the command table and line diagrams below. The server will only accept authorized users whose usernames and passwords are in the credentials file. To keep persistent records, the list of available books and borrowed books will be stored in respective files.
 
+### Table 1: `users`
+
+- **Purpose**: Store user information.
+- **Primary Key**: `user_id`
+
+| Column   | Data Type         |
+| -------- | ----------------- |
+| user_id  | INT (Primary Key) |
+| username | STRING            |
+| password | STRING            |
+| email    | STRING            |
+
+### Table 2: `books`
+
+- **Purpose**: Store book information.
+- **Primary Key**: `book_id`
+
+| Column       | Data Type         |
+| ------------ | ----------------- |
+| book_id      | INT (Primary Key) |
+| title        | STRING            |
+| author       | STRING            |
+| is_available | BOOLEAN           |
+
+### Table 3: `checkouts`
+
+- **Purpose**: To record which user has checked out which book, representing the relationship between `users` and `books`.
+- **Primary Key**: Combination of `user_id` and `book_id` (composite key).
+- **Foreign Keys**: `user_id` (references `users.user_id`), `book_id` (references `books.book_id`).
+
+| Column        | Data Type                                     |
+| ------------- | --------------------------------------------- |
+| checkout_id   | INT (Primary Key, Auto Increment)             |
+| user_id       | INT (Foreign Key referencing `users.user_id`) |
+| book_id       | INT (Foreign Key referencing `books.book_id`) |
+| checkout_date | DATE                                          |
+| return_date   | DATE (nullable)                               |
+
+### Relationship Explanation:
+
+- The `users` table is linked to the `books` table through the `checkouts` table, which records each instance of a user checking out a book.
+- The `checkouts` table has a **many-to-one relationship** with both the `users` and `books` tables.
+  - A single user can have multiple entries in the `checkouts` table for different books (one-to-many).
+  - A single book can have multiple checkout records over time (one-to-many), but at any point in time, it can only be checked out by one user.
+
+### Primary Key and Foreign Key:
+
+- The `primary key` in the `checkouts` table is typically the combination of `user_id` and `book_id`, which ensures that a book cannot be checked out multiple times simultaneously by the same user.
+- The `foreign keys` in the `checkouts` table are `user_id` and `book_id`, which reference the `users` and `books` tables respectively.
+
 ## Diagram
 
 ```mermaid
