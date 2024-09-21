@@ -9,23 +9,23 @@ The digital Library Management System will allow authorized users to log in, che
 - **Purpose**: Store user information.
 - **Primary Key**: `user_id`
 
-| Column   | Data Type         |
-| -------- | ----------------- |
-| user_id  | INT (Primary Key) |
-| username | STRING            |
-| password | STRING            |
+| Column   | Data Type              |
+| -------- | ---------------------- |
+| user_id  | uint32_t (Primary Key) |
+| username | char \*                |
+| password | char \*                |
 
 ### Table 2: `books`
 
 - **Purpose**: Store book information.
 - **Primary Key**: `book_id`
 
-| Column       | Data Type         |
-| ------------ | ----------------- |
-| book_id      | INT (Primary Key) |
-| title        | STRING            |
-| author       | STRING            |
-| is_available | BOOLEAN           |
+| Column       | Data Type              |
+| ------------ | ---------------------- |
+| book_id      | uint32_t (Primary Key) |
+| title        | char \*                |
+| author       | char \*                |
+| is_available | bool                   |
 
 ### Table 3: `checkouts`
 
@@ -33,13 +33,13 @@ The digital Library Management System will allow authorized users to log in, che
 - **Primary Key**: Combination of `user_id` and `book_id` (composite key).
 - **Foreign Keys**: `user_id` (references `users.user_id`), `book_id` (references `books.book_id`).
 
-| Column        | Data Type                                     |
-| ------------- | --------------------------------------------- |
-| checkout_id   | INT (Primary Key, Auto Increment)             |
-| user_id       | INT (Foreign Key referencing `users.user_id`) |
-| book_id       | INT (Foreign Key referencing `books.book_id`) |
-| checkout_date | DATE                                          |
-| return_date   | DATE (nullable)                               |
+| Column        | Data Type                                          |
+| ------------- | -------------------------------------------------- |
+| checkout_id   | uint32_t (Primary Key, Auto Increment)             |
+| user_id       | uint32_t (Foreign Key referencing `users.user_id`) |
+| book_id       | uint32_t (Foreign Key referencing `books.book_id`) |
+| checkout_date | char \*                                            |
+| return_date   | char \* (nullable)                                 |
 
 ### Relationship Explanation:
 
