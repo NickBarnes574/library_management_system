@@ -14,7 +14,6 @@ The digital Library Management System will allow authorized users to log in, che
 | user_id  | INT (Primary Key) |
 | username | STRING            |
 | password | STRING            |
-| email    | STRING            |
 
 ### Table 2: `books`
 
