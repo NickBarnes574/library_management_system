@@ -26,7 +26,7 @@ flowchart RL
     subgraph Server
         direction LR
         id1[(Credentials DB)] --> A[Library Management System]
-        id2[(Books DB)] --> A[Library Management System]
+        id2[(Library DB)] --> A[Library Management System]
         id3[(Sessions DB)] --> A[Library Management System]
     end
 

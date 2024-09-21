@@ -1,0 +1,10 @@
+10234567:The Great Gatsby:F. Scott Fitzgerald:true
+19876543:To Kill a Mockingbird:Harper Lee:false
+12345678:1984:George Orwell:true
+87654321:Pride and Prejudice:Jane Austen:false
+23456789:Moby Dick:Herman Melville:true
+34567890:The Catcher in the Rye:J.D. Salinger:false
+45678901:War and Peace:Leo Tolstoy:true
+56789012:The Hobbit:J.R.R. Tolkien:true
+67890123:Crime and Punishment:Fyodor Dostoevsky:false
+78901234:Brave New World:Aldous Huxley:true
